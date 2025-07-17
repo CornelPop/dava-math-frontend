@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { AuthLayout } from "@/components/ui/auth-layout"
-import { CheckCircle } from "lucide-react"
+import { CheckCircle, AlertCircle } from "lucide-react"
 import { Link } from "react-router-dom";
 import { EmailInputField } from "../common/email-input-field"
 import { PasswordInputField } from "../common/password-input-field"
@@ -10,6 +10,8 @@ import { ForgotPasswordLink } from "./components/forgot-password-link"
 import { SubmitButton } from "../common/submit-button"
 import { Divider } from "../common/divider"
 import { RegisterLinkButton } from "./components/register-link-button"
+import { useNavigate } from "react-router-dom"
+
 
 export default function Login() {
     const [formData, setFormData] = useState({
@@ -20,6 +22,7 @@ export default function Login() {
     const [errors, setErrors] = useState({})
     const [isLoading, setIsLoading] = useState(false)
     const [loginSuccess, setLoginSuccess] = useState(false)
+    const navigate = useNavigate();
     const validateForm = () => {
         const newErrors = {}
         if (!formData.email) {
@@ -36,38 +39,45 @@ export default function Login() {
         return Object.keys(newErrors).length === 0
     }
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        if (!validateForm()) return
-        setIsLoading(true)
-        // Simulate API call
-        setTimeout(() => {
-            setIsLoading(false)
-            setLoginSuccess(true)
-            // In a real app, you would redirect to the dashboard here
-        }, 1500)
-    }
+        e.preventDefault();
+        if (!validateForm()) return;
+        setIsLoading(true);
+
+        try {
+            const response = await fetch("http://localhost:8000/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: formData.email,
+                    password: formData.password
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Login failed");
+            }
+
+            localStorage.setItem("token", data.token);
+
+            setLoginSuccess(true);
+            navigate("/");
+        } catch (error) {
+            setErrors({ general: error.message });
+        } finally {
+            setIsLoading(false);
+        }
+    };
     const handleInputChange = (field, value) => {
         setFormData((prev) => ({ ...prev, [field]: value }))
         if (errors[field]) {
             setErrors((prev) => ({ ...prev, [field]: "" }))
         }
     }
-    if (loginSuccess) {
-        return (
-            <AuthLayout title="Welcome Back!" subtitle="Login successful">
-                <Card className="shadow-lg border-green-200 bg-green-50">
-                    <CardContent className="p-6 text-center">
-                        <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
-                        <h3 className="text-lg font-semibold text-green-800 mb-2">Login Successful!</h3>
-                        <p className="text-green-700 mb-4">Redirecting to your dashboard...</p>
-                        <Link href="/math-tool">
-                            <Button className="bg-green-600 hover:bg-green-700">Go to Math Tool</Button>
-                        </Link>
-                    </CardContent>
-                </Card>
-            </AuthLayout>
-        )
-    }
+    
     return (
         <AuthLayout title="Welcome Back" subtitle="Sign in to your account to continue">
             <Card className="shadow-lg">
@@ -76,6 +86,12 @@ export default function Login() {
                 </CardHeader>
                 <CardContent className="p-6">
                     <form onSubmit={handleSubmit} className="space-y-4">
+                        {errors.general && (
+                            <p className="text-sm text-red-600 flex items-center gap-1">
+                                <AlertCircle className="w-4 h-4" />
+                                {errors.general}
+                            </p>
+                        )}
                         {/* Email Field */}
                         <EmailInputField
                             value={formData.email}

@@ -3,7 +3,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { AuthLayout } from "@/components/ui/auth-layout"
-import { AlertCircle, CheckCircle} from "lucide-react"
+import { AlertCircle, CheckCircle } from "lucide-react"
 import { Link } from "react-router-dom";
 import { EmailInputField } from "../common/email-input-field"
 import { SubmitButton } from "../common/submit-button"
@@ -14,6 +14,7 @@ import { PasswordStrengthIndicator } from "./components/password-strength-indica
 import { TermsCheckboxSection } from "./components/terms-checkbox-section"
 import { LoginLinkButton } from "./components/login-link-button"
 import { ConfirmPasswordField } from "./components/confirm-password-field"
+import { useNavigate } from "react-router-dom"
 
 
 export default function Register() {
@@ -30,6 +31,7 @@ export default function Register() {
     const [errors, setErrors] = useState({})
     const [isLoading, setIsLoading] = useState(false)
     const [registrationSuccess, setRegistrationSuccess] = useState(false)
+    const navigate = useNavigate();
     const validateForm = () => {
         const newErrors = {}
         if (!formData.firstName.trim()) {
@@ -62,15 +64,41 @@ export default function Register() {
         return Object.keys(newErrors).length === 0
     }
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        if (!validateForm()) return
-        setIsLoading(true)
-        // Simulate API call
-        setTimeout(() => {
-            setIsLoading(false)
-            setRegistrationSuccess(true)
-        }, 2000)
-    }
+        e.preventDefault();
+        if (!validateForm()) return;
+        setIsLoading(true);
+        console.log("Sending login payload:", {
+            email: formData.email,
+            password: formData.password
+        });
+
+        try {
+            const response = await fetch("http://localhost:8000/auth/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: formData.email,
+                    password: formData.password
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Registration failed");
+            }
+
+            setRegistrationSuccess(true);
+            navigate("/login");
+        } catch (error) {
+            setErrors({ general: error.message });
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const handleInputChange = (field, value) => {
         setFormData((prev) => ({ ...prev, [field]: value }))
         if (errors[field]) {
@@ -87,24 +115,7 @@ export default function Register() {
         return strength
     }
     const passwordStrength = getPasswordStrength(formData.password)
-    if (registrationSuccess) {
-        return (
-            <AuthLayout title="Welcome!" subtitle="Account created successfully">
-                <Card className="shadow-lg border-green-200 bg-green-50">
-                    <CardContent className="p-6 text-center">
-                        <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
-                        <h3 className="text-lg font-semibold text-green-800 mb-2">Account Created!</h3>
-                        <p className="text-green-700 mb-4">
-                            Welcome to Mathematical Calculator. You can now sign in to your account.
-                        </p>
-                        <Link href="/login">
-                            <Button className="bg-green-600 hover:bg-green-700">Sign In Now</Button>
-                        </Link>
-                    </CardContent>
-                </Card>
-            </AuthLayout>
-        )
-    }
+   
     return (
         <AuthLayout title="Create Account" subtitle="Join us to access advanced mathematical tools">
             <Card className="shadow-lg">
@@ -143,6 +154,12 @@ export default function Register() {
                                 <p className="text-sm text-red-600 flex items-center gap-1">
                                     <AlertCircle className="w-4 h-4" />
                                     {errors.password}
+                                </p>
+                            )}
+                            {errors.general && (
+                                <p className="text-sm text-red-600 flex items-center gap-1">
+                                    <AlertCircle className="w-4 h-4" />
+                                    {errors.general}
                                 </p>
                             )}
                         </div>
