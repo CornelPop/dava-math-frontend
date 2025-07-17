@@ -5,7 +5,7 @@ import {
     calculatePower,
     getFibonacci,
     getFactorial,
-} from "../services/mathOperationsService"
+} from "../../../services/mathOperationsService"
 
 export default function CalculatorCard({ subject }) {
     const [expression, setExpression] = useState("")

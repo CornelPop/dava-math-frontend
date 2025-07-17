@@ -1,37 +1,18 @@
-import React, { useState } from "react"
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Sidebar from "./components/Sidebar.jsx"
-import CalculatorCard from "./components/CalculatorCard.jsx"
-import QuickTips from "./components/QuickTips.jsx"
-import AppHeader from "./components/Header.jsx"
+import Home from "./components/home/home.jsx";
+import Login from "./components/login/login.jsx";
+import Register from "./components/register/register.jsx";
 
 export default function App() {
-    const [activeSubject, setActiveSubject] = useState("matematica-1")
-
-    const subjects = [
-        { id: "matematica-1", name: "Pow Function", icon: "📐" },
-        { id: "matematica-2", name: "The n-th Fibbonaci", icon: "📊" },
-        { id: "matematica-3", name: "Factorial of Number", icon: "∫" },
-    ]
-
-    const currentSubject = subjects.find((s) => s.id === activeSubject)
-
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
-            <div className="max-w-6xl mx-auto">
-                <AppHeader />
-                <div className="grid lg:grid-cols-4 gap-6">
-                    <Sidebar
-                        subjects={subjects}
-                        activeSubject={activeSubject}
-                        setActiveSubject={setActiveSubject}
-                    />
-                    <div className="lg:col-span-3 space-y-6">
-                        <CalculatorCard subject={currentSubject} />
-                        <QuickTips />
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+            </Routes>
+        </BrowserRouter>
+    );
 }
