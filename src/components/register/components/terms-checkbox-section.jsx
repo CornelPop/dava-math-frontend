@@ -16,11 +16,11 @@ export const TermsCheckboxSection = ({ checked, onChange, error }) => {
         />
         <Label htmlFor="agreeToTerms" className="text-sm text-slate-700 leading-5">
           I agree to the{" "}
-          <Link to="/terms" className="text-blue-600 hover:text-blue-800">
+          <Link to="/terms" className="text-orange-600 hover:text-orange-800">
             Terms of Service
           </Link>{" "}
           and{" "}
-          <Link to="/privacy" className="text-blue-600 hover:text-blue-800">
+          <Link to="/privacy" className="text-orange-600 hover:text-orange-800">
             Privacy Policy
           </Link>
         </Label>

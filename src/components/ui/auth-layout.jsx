@@ -8,7 +8,7 @@ export function AuthLayout({ children, title, subtitle }) {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <div className="p-3 bg-blue-600 rounded-xl shadow-lg">
+            <div className="p-3 bg-orange-600 rounded-xl shadow-lg">
               <Calculator className="w-8 h-8 text-white" />
             </div>
           </div>

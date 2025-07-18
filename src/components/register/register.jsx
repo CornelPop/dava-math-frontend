@@ -115,13 +115,15 @@ export default function Register() {
         return strength
     }
     const passwordStrength = getPasswordStrength(formData.password)
-   
+
     return (
         <AuthLayout title="Create Account" subtitle="Join us to access advanced mathematical tools">
             <Card className="shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg">
-                    <CardTitle className="text-center">Create New Account</CardTitle>
-                </CardHeader>
+                <div className="bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-t-lg">
+                    <CardHeader className="p-4">
+                        <CardTitle className="text-center">Create new account</CardTitle>
+                    </CardHeader>
+                </div>
                 <CardContent className="p-6">
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {/* Name Fields */}

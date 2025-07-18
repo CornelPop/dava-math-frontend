@@ -77,13 +77,15 @@ export default function Login() {
             setErrors((prev) => ({ ...prev, [field]: "" }))
         }
     }
-    
+
     return (
         <AuthLayout title="Welcome Back" subtitle="Sign in to your account to continue">
             <Card className="shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg">
-                    <CardTitle className="text-center">Sign In</CardTitle>
-                </CardHeader>
+                <div className="bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-t-lg">
+                    <CardHeader className="p-4">
+                        <CardTitle className="text-center">Sign In</CardTitle>
+                    </CardHeader>
+                </div>
                 <CardContent className="p-6">
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {errors.general && (
