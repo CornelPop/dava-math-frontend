@@ -20,7 +20,7 @@ const Input = ({
                     <input
                         id={ids[index] || `input-${index}`}
                         type="text"
-                        className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                        className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
                         placeholder={placeholders[index] || ""}
                         value={values[index] || ""}
                         onChange={onChanges[index]}

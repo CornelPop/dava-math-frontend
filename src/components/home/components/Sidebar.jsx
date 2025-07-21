@@ -10,7 +10,7 @@ export default function Sidebar({subjects, activeSubject, setActiveSubject}) {
                     onClick={() => setActiveSubject(subject.id)}
                     className={`w-full p-3 rounded-lg text-left flex items-center gap-3 transition ${
                         activeSubject === subject.id
-                            ? "bg-blue-50 border-2 border-blue-300"
+                            ? "bg-orange-50 border-2 border-orange-300"
                             : "bg-white border border-slate-200 hover:bg-slate-50"
                     }`}
                 >
@@ -18,7 +18,7 @@ export default function Sidebar({subjects, activeSubject, setActiveSubject}) {
                     <div className="flex flex-col">
                         <span className="text-slate-800 font-medium">{subject.name}</span>
                         {activeSubject === subject.id && (
-                            <span className="mt-1 text-xs text-blue-700 bg-blue-100 rounded-full px-2 py-0.5 w-fit">
+                            <span className="mt-1 text-xs text-orange-700 bg-orange-100 rounded-full px-2 py-0.5 w-fit">
                                 Active
                             </span>
                         )}

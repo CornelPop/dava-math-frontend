@@ -15,7 +15,7 @@ export default function CalculatorCard({ subject }) {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
 
-    const token = localStorage.getItem("jwt")
+    const token = localStorage.getItem("token")
 
     const handleCalculate = async () => {
         setError("")
@@ -63,7 +63,7 @@ export default function CalculatorCard({ subject }) {
 
     return (
         <div className="shadow-lg border border-slate-200 rounded-lg overflow-hidden">
-            <div className="bg-blue-600 text-white p-4 text-lg font-semibold flex items-center gap-2">
+            <div className="bg-orange-600 text-white p-4 text-lg font-semibold flex items-center gap-2">
                 <span className="text-2xl">{subject.icon}</span>
                 {subject.name}
             </div>
@@ -97,7 +97,7 @@ export default function CalculatorCard({ subject }) {
                 )}
 
                 <button
-                    className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-60"
+                    className="w-full bg-orange-600 text-white py-2 rounded-lg font-semibold hover:bg-orange-700 transition disabled:opacity-60"
                     onClick={handleCalculate}
                     disabled={loading}
                 >
