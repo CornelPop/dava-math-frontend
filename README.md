@@ -1,6 +1,7 @@
     # DavaMath Frontend
 
 This is the frontend for the **DavaMath** project, a web application for solving mathematical problems. The frontend is built using **React** and **Vite**, and communicates with a FastAPI backend for authentication and mathematical operations.
+Project made by: Fedus Robert, Pop Cornel Adrian, Darko Reka - Katalin
 
 ---
 
